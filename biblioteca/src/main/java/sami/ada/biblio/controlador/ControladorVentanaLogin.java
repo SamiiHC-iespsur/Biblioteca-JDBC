@@ -24,10 +24,12 @@ public class ControladorVentanaLogin implements ActionListener {
 
     private final Login vista;
     private final UsuarioDAO usuarioDAO;
+    private final Conexion conexion;
 
-    public ControladorVentanaLogin(Login vista, UsuarioDAO usuarioDAO) {
+    public ControladorVentanaLogin(Login vista, UsuarioDAO usuarioDAO, Conexion conexion) {
         this.vista = vista;
         this.usuarioDAO = usuarioDAO;
+        this.conexion = conexion;
     }
 
     public void registrarEventos() {
@@ -52,7 +54,6 @@ public class ControladorVentanaLogin implements ActionListener {
                 return;
             }
 
-            Conexion conexion = new Conexion();
             GeneroDAO generoDAO = new GeneroDAO(conexion);
             LibroDAO libroDAO = new LibroDAO(conexion);
             EdicionDAO edicionDAO = new EdicionDAO(conexion);
