@@ -2,6 +2,7 @@ D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\model
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\controlador\ControladorVentanaLogin.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\DAO\AutorDAO.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\Asigna.java
+D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\principal\Main.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\Ejemplar.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\Libro.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\DAO\LibroDAO.java
@@ -17,11 +18,12 @@ D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\model
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\Prestamo.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\DAO\AsignaDAO.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\DAO\UsuarioDAO.java
+D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\EdicionConLibro.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\Genero.java
-D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\Main.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\DAO\EjemplarDAO.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\vista\Detalles.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\DAO\PrestamoDAO.java
+D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\LibroConAutor.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\modelo\Edicion.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\controlador\ControladorVentanaInicio.java
 D:\Proyectos\PINT\Biblioteca-JDBC\biblioteca\src\main\java\sami\ada\biblio\controlador\ControladorVentanaDetalles.java

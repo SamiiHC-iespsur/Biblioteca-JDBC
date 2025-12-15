@@ -65,6 +65,11 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setText("DNI:");
         jPanel2.add(jLabel2);
 
+        jTextFieldDni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldDniActionPerformed(evt);
+            }
+        });
         jPanel2.add(jTextFieldDni);
 
         jPanel1.add(jPanel2);
@@ -117,7 +122,8 @@ public class Login extends javax.swing.JFrame {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE))
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,8 +136,12 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPasswordFieldContrasennaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldContrasennaActionPerformed
-        // TODO add your handling code here:
+    private void jTextFieldDniActionPerformed(java.awt.event.ActionEvent evt) {
+        //GEN-FIRST:event_jTextFieldDniActionPerformed
+    }//GEN-LAST:event_jTextFieldDniActionPerformed
+
+    private void jPasswordFieldContrasennaActionPerformed(java.awt.event.ActionEvent evt) {
+        //GEN-FIRST:event_jPasswordFieldContrasennaActionPerformed
     }//GEN-LAST:event_jPasswordFieldContrasennaActionPerformed
 
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {

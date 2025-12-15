@@ -4,21 +4,21 @@ USE Biblioteca;
 
 CREATE TABLE Autor (
    id INT PRIMARY KEY AUTO_INCREMENT,
-   nombre VARCHAR(100),
+   nombre VARCHAR(100) NOT NULL,
    anno_nacimiento INT,
    nacionalidad VARCHAR(50)
 );
 
 CREATE TABLE Libro (
    id INT PRIMARY KEY AUTO_INCREMENT,
-   titulo VARCHAR(200)
+   titulo VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE Usuario (
    dni CHAR(9) PRIMARY KEY,
-   nombre VARCHAR(100),
-   dir_correo VARCHAR(100),
-   pswd VARCHAR(100)
+   nombre VARCHAR(100) NOT NULL,
+   dir_correo VARCHAR(100) NOT NULL,
+   pswd VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Escribe (
@@ -56,6 +56,7 @@ CREATE TABLE Prestamo (
    cod_prestamo INT PRIMARY KEY,
    fecha DATE,
    fecha_devolucion DATE,
+   activo BOOLEAN DEFAULT TRUE,
    id_usuario CHAR(9),
    FOREIGN KEY (id_usuario) REFERENCES Usuario(dni)
 );
@@ -71,7 +72,7 @@ CREATE TABLE asigna (
 CREATE TABLE Review (
    dni_usuario CHAR(9),
    isbn_edicion VARCHAR(20),
-   valoracion INT,
+   valoracion INT NOT NULL CHECK (valoracion BETWEEN 1 AND 5),
    descripcion TEXT,
    PRIMARY KEY (dni_usuario, isbn_edicion),
    FOREIGN KEY (dni_usuario) REFERENCES Usuario(dni),
@@ -150,3 +151,75 @@ INSERT INTO asigna (id_ejemplar, cod_prestamo) VALUES
 INSERT INTO Review (dni_usuario, isbn_edicion, valoracion, descripcion) VALUES
 ('12345678P', '978-3-16-148410-0', 5, 'Una obra maestra del realismo magico.'),
 ('87654321L', '978-0-06-112241-5', 4, 'Una lectura fascinante sobre la historia familiar.');
+
+DELIMITER //
+CREATE TRIGGER trg_asigna_no_overlap
+BEFORE INSERT ON asigna
+FOR EACH ROW
+BEGIN
+   IF EXISTS (
+       SELECT 1
+       FROM asigna a
+       JOIN Prestamo p ON a.cod_prestamo = p.cod_prestamo
+       WHERE a.id_ejemplar = NEW.id_ejemplar
+         AND p.activo = TRUE
+   ) THEN
+       SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'El ejemplar ya está prestado y activo';
+   END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_asigna_max_10
+BEFORE INSERT ON asigna
+FOR EACH ROW
+BEGIN
+   IF (
+      SELECT COUNT(*) FROM asigna WHERE cod_prestamo = NEW.cod_prestamo
+   ) >= 10 THEN
+      SIGNAL SQLSTATE '45000'
+         SET MESSAGE_TEXT = 'Un préstamo no puede tener más de 10 ejemplares';
+   END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_asigna_unica_edicion
+BEFORE INSERT ON asigna
+FOR EACH ROW
+BEGIN
+   IF EXISTS (
+      SELECT 1
+      FROM asigna a
+      JOIN Ejemplar e ON a.id_ejemplar = e.id
+      WHERE a.cod_prestamo = NEW.cod_prestamo
+        AND e.isbn_edicion = (SELECT isbn_edicion FROM Ejemplar WHERE id = NEW.id_ejemplar)
+   ) THEN
+      SIGNAL SQLSTATE '45000'
+         SET MESSAGE_TEXT = 'Un préstamo no puede tener dos ejemplares de la misma edición';
+   END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_prestamo_set_fechas
+BEFORE INSERT ON Prestamo
+FOR EACH ROW
+BEGIN
+   IF NEW.fecha IS NULL THEN
+      SET NEW.fecha = CURRENT_DATE();
+   END IF;
+   SET NEW.fecha_devolucion = DATE_ADD(NEW.fecha, INTERVAL 1 MONTH);
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE adelantar_devolucion(IN p_cod_prestamo INT)
+BEGIN
+   UPDATE Prestamo
+   SET fecha_devolucion = GREATEST(fecha, DATE_SUB(fecha_devolucion, INTERVAL 7 DAY))
+   WHERE cod_prestamo = p_cod_prestamo;
+END //
+DELIMITER ;
+

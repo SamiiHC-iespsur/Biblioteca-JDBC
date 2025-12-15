@@ -16,7 +16,7 @@ import sami.ada.biblio.modelo.Usuario;
 
 /**
  *
- * @author Samuel
+ * @author Samii
  */
 public class Detalles extends javax.swing.JFrame {
 
@@ -183,6 +183,8 @@ public class Detalles extends javax.swing.JFrame {
 
         jTextAreaComentario.setColumns(20);
         jTextAreaComentario.setRows(5);
+        jTextAreaComentario.setLineWrap(true);
+        jTextAreaComentario.setWrapStyleWord(true);
         jScrollPane1.setViewportView(jTextAreaComentario);
 
         jButtonEnviarResenna.setText("Enviar reseña");
@@ -411,6 +413,7 @@ public class Detalles extends javax.swing.JFrame {
                 cuerpo.setOpaque(false);
                 cuerpo.setBorder(null);
                 cuerpo.setAlignmentX(Component.LEFT_ALIGNMENT);
+                cuerpo.setFont(cuerpo.getFont().deriveFont(java.awt.Font.ITALIC));
 
                 panel.add(cabecera);
                 panel.add(javax.swing.Box.createVerticalStrut(4));
