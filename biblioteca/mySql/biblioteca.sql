@@ -47,7 +47,7 @@ CREATE TABLE Edicion (
 
 CREATE TABLE Ejemplar (
    id INT PRIMARY KEY AUTO_INCREMENT,
-   estado VARCHAR(50),
+   estado ENUM('Nuevo', 'Bueno', 'Aceptable'),
    isbn_edicion VARCHAR(20),
    FOREIGN KEY (isbn_edicion) REFERENCES Edicion(isbn)
 );

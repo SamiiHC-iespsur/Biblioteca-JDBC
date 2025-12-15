@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import sami.ada.biblio.modelo.Edicion;
+import sami.ada.biblio.modelo.EdicionConLibro;
 
 public class EdicionDAO {
 
@@ -59,6 +60,29 @@ public class EdicionDAO {
             }
         }
         return ediciones;
+    }
+
+    public List<EdicionConLibro> listarEdicionesConLibro() throws SQLException {
+        String sql = "SELECT e.isbn, e.id_libro, l.titulo, "
+                + "COALESCE(GROUP_CONCAT(a.nombre SEPARATOR ', '), 'Autor desconocido') AS autores "
+                + "FROM Edicion e "
+                + "JOIN Libro l ON l.id = e.id_libro "
+                + "LEFT JOIN Escribe es ON es.id_libro = l.id "
+                + "LEFT JOIN Autor a ON a.id = es.id_autor "
+                + "GROUP BY e.isbn, e.id_libro, l.titulo "
+                + "ORDER BY l.titulo, e.isbn";
+
+        List<EdicionConLibro> resultado = new ArrayList<>();
+        try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                resultado.add(new EdicionConLibro(
+                        rs.getString("isbn"),
+                        rs.getInt("id_libro"),
+                        rs.getString("titulo"),
+                        rs.getString("autores")));
+            }
+        }
+        return resultado;
     }
 
     public boolean actualizar(Edicion edicion) throws SQLException {

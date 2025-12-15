@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import sami.ada.biblio.modelo.Ejemplar;
+import sami.ada.biblio.modelo.Ejemplar.Estado;
 
 public class EjemplarDAO {
 
@@ -21,7 +22,7 @@ public class EjemplarDAO {
     public Ejemplar insertar(Ejemplar ejemplar) throws SQLException {
         String sql = "INSERT INTO Ejemplar (estado, isbn_edicion) VALUES (?, ?)";
         try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, ejemplar.getEstado());
+            ps.setString(1, ejemplar.getEstado() != null ? ejemplar.getEstado().getDbValue() : null);
             ps.setString(2, ejemplar.getIsbnEdicion());
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -63,7 +64,7 @@ public class EjemplarDAO {
     public boolean actualizar(Ejemplar ejemplar) throws SQLException {
         String sql = "UPDATE Ejemplar SET estado = ?, isbn_edicion = ? WHERE id = ?";
         try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql)) {
-            ps.setString(1, ejemplar.getEstado());
+            ps.setString(1, ejemplar.getEstado() != null ? ejemplar.getEstado().getDbValue() : null);
             ps.setString(2, ejemplar.getIsbnEdicion());
             ps.setInt(3, ejemplar.getId());
             return ps.executeUpdate() > 0;
@@ -81,7 +82,7 @@ public class EjemplarDAO {
     private Ejemplar mapear(ResultSet rs) throws SQLException {
         return new Ejemplar(
                 rs.getInt("id"),
-                rs.getString("estado"),
+                Estado.fromDbValue(rs.getString("estado")),
                 rs.getString("isbn_edicion")
         );
     }
