@@ -1,0 +1,6 @@
+{
+  "java.project.sourcePaths": [
+    "Biblioteca-JDBC/biblioteca/src/main/java"
+  ],
+  "java.project.outputPath": "Biblioteca-JDBC/biblioteca/target/classes"
+}
