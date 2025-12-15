@@ -1,6 +1,8 @@
 package sami.ada.biblio.controlador;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.Normalizer;
 import java.util.List;
@@ -200,26 +202,28 @@ public class ControladorVentanaDetalles {
         }
 
         String nombreNormalizado = normalizarNombreImagen(titulo);
-        String ruta = "Biblioteca-JDBC" + File.separator
-                + "biblioteca" + File.separator
-                + "src" + File.separator
-                + "main" + File.separator
-                + "java" + File.separator
-                + "sami" + File.separator
-                + "ada" + File.separator
-                + "biblio" + File.separator
-                + "vista" + File.separator
-                + "imgs" + File.separator
-                + nombreNormalizado + ".png";
+        String nombreArchivo = nombreNormalizado + ".png";
 
-        java.net.URL recurso = getClass().getResource(ruta);
+        // Primero intentamos cargarlo como recurso de clase (ideal cuando las imágenes están en src/main/resources)
+        String recursoClasspath = "/sami/ada/biblio/vista/imgs/" + nombreArchivo;
+        java.net.URL recurso = getClass().getResource(recursoClasspath);
         if (recurso != null) {
             return new ImageIcon(recurso);
         }
 
-        File archivo = new File(ruta);
-        if (archivo.exists()) {
-            return new ImageIcon(archivo.getAbsolutePath());
+        // Fallback: buscamos en rutas relativas habituales para entorno de desarrollo
+        Path[] candidatos = new Path[]{
+            Paths.get("biblioteca", "src", "main", "resources", "sami", "ada", "biblio", "vista", "imgs", nombreArchivo),
+            Paths.get("biblioteca", "src", "main", "java", "sami", "ada", "biblio", "vista", "imgs", nombreArchivo),
+            Paths.get("src", "main", "resources", "sami", "ada", "biblio", "vista", "imgs", nombreArchivo),
+            Paths.get("src", "main", "java", "sami", "ada", "biblio", "vista", "imgs", nombreArchivo)
+        };
+
+        for (Path candidato : candidatos) {
+            Path absoluto = candidato.toAbsolutePath();
+            if (Files.exists(absoluto)) {
+                return new ImageIcon(absoluto.toString());
+            }
         }
 
         return null;
