@@ -153,7 +153,11 @@ public class ControladorVentanaInicio {
     private void cerrarSesion() {
         vista.dispose();
         conexion.cerrarConexion();
+        Conexion nuevaConexion = new Conexion();
+        UsuarioDAO usuarioDAO = new UsuarioDAO(nuevaConexion);
         Login login = new Login();
+        ControladorVentanaLogin controladorLogin = new ControladorVentanaLogin(login, usuarioDAO, nuevaConexion);
+        controladorLogin.registrarEventos();
         login.setVisible(true);
     }
 }
