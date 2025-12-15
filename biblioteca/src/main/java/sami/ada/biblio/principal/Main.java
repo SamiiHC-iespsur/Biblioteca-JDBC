@@ -1,4 +1,4 @@
-package sami.ada.biblio;
+package sami.ada.biblio.principal;
 
 import sami.ada.biblio.vista.Login;
 

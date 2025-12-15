@@ -60,13 +60,16 @@ public class Ejemplar {
                 return null;
             }
             switch (value) {
-                case "Nuevo":
+                case "Nuevo" -> {
                     return NUEVO;
-                case "Bueno":
+                }
+                case "Bueno" -> {
                     return BUENO;
-                case "Aceptable":
+                }
+                case "Aceptable" -> {
                     return ACEPTABLE;
-                default:
+                }
+                default ->
                     throw new IllegalArgumentException("Estado de ejemplar no permitido: " + value);
             }
         }

@@ -22,7 +22,6 @@ public class ControladorVentanaInicio {
 
     private final Inicio vista;
     private final GeneroDAO generoDAO;
-    private final LibroDAO libroDAO;
     private final EdicionDAO edicionDAO;
     private final EjemplarDAO ejemplarDAO;
     private final ReviewDAO reviewDAO;
@@ -35,7 +34,6 @@ public class ControladorVentanaInicio {
     public ControladorVentanaInicio(Inicio vista, GeneroDAO generoDAO, LibroDAO libroDAO, EdicionDAO edicionDAO, EjemplarDAO ejemplarDAO, ReviewDAO reviewDAO, UsuarioDAO usuarioDAO, Conexion conexion) {
         this.vista = vista;
         this.generoDAO = generoDAO;
-        this.libroDAO = libroDAO;
         this.edicionDAO = edicionDAO;
         this.ejemplarDAO = ejemplarDAO;
         this.reviewDAO = reviewDAO;
