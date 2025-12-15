@@ -4,29 +4,19 @@
  */
 package sami.ada.biblio.vista;
 
-import sami.ada.biblio.controlador.ControladorVentanaLogin;
-import sami.ada.biblio.modelo.DAO.Conexion;
-import sami.ada.biblio.modelo.DAO.UsuarioDAO;
-
 /**
  *
- * @author Samuel
+ * @author Samii
  */
 public class Login extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
-
-    private transient ControladorVentanaLogin controlador;
 
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents();
-        var conexion = new Conexion();
-        var usuarioDAO = new UsuarioDAO(conexion);
-        controlador = new ControladorVentanaLogin(this, usuarioDAO);
-        controlador.registrarEventos();
     }
 
     /**
@@ -199,7 +189,7 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Login().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> sami.ada.biblio.principal.Main.main(args));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
