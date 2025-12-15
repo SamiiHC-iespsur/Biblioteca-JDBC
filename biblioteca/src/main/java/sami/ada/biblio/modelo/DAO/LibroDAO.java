@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import sami.ada.biblio.modelo.Libro;
+import sami.ada.biblio.modelo.LibroConAutor;
 
 public class LibroDAO {
 
@@ -51,6 +52,30 @@ public class LibroDAO {
         try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 libros.add(mapear(rs));
+            }
+        }
+        return libros;
+    }
+
+    public List<LibroConAutor> listarConAutores() throws SQLException {
+        String sql = "SELECT l.id, l.titulo, "
+                + "GROUP_CONCAT(a.nombre SEPARATOR ', ') AS autores, "
+                + "(SELECT e2.isbn FROM Edicion e2 WHERE e2.id_libro = l.id ORDER BY e2.isbn LIMIT 1) AS isbn "
+                + "FROM Libro l "
+                + "LEFT JOIN Escribe e ON e.id_libro = l.id "
+                + "LEFT JOIN Autor a ON a.id = e.id_autor "
+                + "GROUP BY l.id, l.titulo "
+                + "ORDER BY l.titulo";
+
+        List<LibroConAutor> libros = new ArrayList<>();
+        try (PreparedStatement ps = conexion.getConexion().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String autores = rs.getString("autores");
+                libros.add(new LibroConAutor(
+                        rs.getInt("id"),
+                        rs.getString("titulo"),
+                        autores != null && !autores.isBlank() ? autores : "Autor desconocido",
+                        rs.getString("isbn")));
             }
         }
         return libros;

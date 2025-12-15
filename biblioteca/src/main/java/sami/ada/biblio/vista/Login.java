@@ -4,6 +4,10 @@
  */
 package sami.ada.biblio.vista;
 
+import sami.ada.biblio.controlador.ControladorVentanaLogin;
+import sami.ada.biblio.modelo.DAO.Conexion;
+import sami.ada.biblio.modelo.DAO.UsuarioDAO;
+
 /**
  *
  * @author Samuel
@@ -12,11 +16,17 @@ public class Login extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
 
+    private transient ControladorVentanaLogin controlador;
+
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents();
+        var conexion = new Conexion();
+        var usuarioDAO = new UsuarioDAO(conexion);
+        controlador = new ControladorVentanaLogin(this, usuarioDAO);
+        controlador.registrarEventos();
     }
 
     /**
@@ -107,7 +117,7 @@ public class Login extends javax.swing.JFrame {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,13 +135,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordFieldContrasennaActionPerformed
 
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {
-        if (validarLocal(jTextFieldDni.getText(), jPasswordFieldContrasenna.getPassword())) {
-            if (validarRemoto(jTextFieldDni.getText(), jPasswordFieldContrasenna.getPassword())) {
-                Inicio inicio = new Inicio();
-                inicio.setVisible(true);
-                this.dispose();
-            }
-        }
+        // El controlador está registrado como ActionListener; se deja vacío para evitar doble llamada.
     }
 
     private void jButtonRegistroActionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,29 +150,21 @@ public class Login extends javax.swing.JFrame {
         javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 
-    public boolean validarLocal(String dni, char[] contrasenna) {
-        if (!dni.matches("[0-9]{8}[A-Za-z]")) {
-            mostrarMensajeError("El DNI no es válido.");
-            return false;
-        }
-
-        if (contrasenna.length == 0) {
-            mostrarMensajeError("La contraseña no puede estar vacía.");
-            return false;
-        }
-
-        return true;
+    public void cerrar() {
+        this.dispose();
     }
 
-    public boolean validarRemoto(String dni, char[] contrasenna) {
-        // Simulación de validación remota
-        // En una implementación real, aquí se haría una llamada a un servicio externo
-        if ("12345678A".equals(dni) && "password".equals(new String(contrasenna))) {
-            return true;
-        } else {
-            mostrarMensajeError("DNI o contraseña incorrectos.");
-            return false;
-        }
+    // Getters para que el controlador pueda acceder a los componentes
+    public javax.swing.JButton getBotonLogin() {
+        return jButtonLogin;
+    }
+
+    public String getDni() {
+        return jTextFieldDni.getText();
+    }
+
+    public char[] getContrasena() {
+        return jPasswordFieldContrasenna.getPassword();
     }
 
     /**
